@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciador de Tarefas Acadêmicas - Quadro de Projetos</title>
+</head>
+<body>
+
+    <!-- Cabeçalho Principal -->
+    <header>
+        <h1>Gerenciador de Tarefas Acadêmicas</h1>
+    </header>
+
+    <!-- Conteúdo Principal -->
+    <main>
+
+        <!-- Região de Busca e Filtros -->
+        <section aria-labelledby="titulo-filtros">
+            <h2 id="titulo-filtros">Filtros e Busca</h2>
+            
+            <form>
+                <div>
+                    <label for="busca-titulo">Buscar por título da tarefa:</label>
+                    <input type="search" id="busca-titulo" name="busca-titulo">
+                </div>
+
+                <fieldset>
+                    <legend>Filtrar por Status</legend>
+                    
+                    <input type="radio" id="status-todos" name="filtro-status" value="todos" checked>
+                    <label for="status-todos">Todos</label>
+
+                    <input type="radio" id="filtro-status-afazer" name="filtro-status" value="a-fazer">
+                    <label for="filtro-status-afazer">A Fazer</label>
+
+                    <input type="radio" id="filtro-status-andamento" name="filtro-status" value="em-andamento">
+                    <label for="filtro-status-andamento">Em Andamento</label>
+
+                    <input type="radio" id="filtro-status-revisao" name="filtro-status" value="em-revisao">
+                    <label for="filtro-status-revisao">Em Revisão</label>
+
+                    <input type="radio" id="filtro-status-concluida" name="filtro-status" value="concluida">
+                    <label for="filtro-status-concluida">Concluída</label>
+                </fieldset>
+
+                <fieldset>
+                    <legend>Filtrar por Prioridade</legend>
+
+                    <input type="radio" id="prioridade-todas" name="filtro-prioridade" value="todas" checked>
+                    <label for="prioridade-todas">Todas</label>
+
+                    <input type="radio" id="prioridade-baixa" name="filtro-prioridade" value="baixa">
+                    <label for="prioridade-baixa">Baixa</label>
+
+                    <input type="radio" id="prioridade-media" name="filtro-prioridade" value="media">
+                    <label for="prioridade-media">Média</label>
+
+                    <input type="radio" id="prioridade-alta" name="filtro-prioridade" value="alta">
+                    <label for="prioridade-alta">Alta</label>
+                </fieldset>
+
+                <button type="submit">Aplicar Filtros</button>
+            </form>
+        </section>
+
+        <!-- Visão do Quadro de Tarefas -->
+        <section aria-labelledby="titulo-quadro">
+            <h2 id="titulo-quadro">Quadro de Tarefas</h2>
+
+            <!-- Coluna 1: A Fazer -->
+            <section aria-labelledby="cabecalho-afazer">
+                <h3 id="cabecalho-afazer">A Fazer</h3>
+                <ul>
+                    <li>
+                        <article>
+                            <h4>Diagrama de Classes UML</h4>
+                            <p><strong>Projeto:</strong> Sistema da Biblioteca</p>
+                            <p><strong>Descrição:</strong> Modelar o diagrama de classes do domínio de empréstimos.</p>
+                            <p><strong>Responsável:</strong> Ana Silva</p>
+                            <p><strong>Prazo:</strong> <time datetime="2026-08-20">20/08/2026</time></p>
+                            <p><strong>Prioridade:</strong> Alta</p>
+                        </article>
+                    </li>
+                    <li>
+                        <article>
+                            <h4>Mapeamento ER do Banco de Dados</h4>
+                            <p><strong>Projeto:</strong> E-commerce Acadêmico</p>
+                            <p><strong>Descrição:</strong> Definir as entidades e relacionamentos para o banco PostgreSQL.</p>
+                            <p><strong>Responsável:</strong> Bruno Santos</p>
+                            <p><strong>Prazo:</strong> <time datetime="2026-08-25">25/08/2026</time></p>
+                            <p><strong>Prioridade:</strong> Média</p>
+                        </article>
+                    </li>
+                </ul>
+            </section>
+
+            <!-- Coluna 2: Em Andamento -->
+            <section aria-labelledby="cabecalho-andamento">
+                <h3 id="cabecalho-andamento">Em Andamento</h3>
+                <ul>
+                    <li>
+                        <article>
+                            <h4>Protótipo de Alta Fidelidade</h4>
+                            <p><strong>Projeto:</strong> App de Monitoria</p>
+                            <p><strong>Descrição:</strong> Criar as telas navegáveis da aplicação no Figma.</p>
+                            <p><strong>Responsável:</strong> Carla Oliveira</p>
+                            <p><strong>Prazo:</strong> <time datetime="2026-08-18">18/08/2026</time></p>
+                            <p><strong>Prioridade:</strong> Alta</p>
+                        </article>
+                    </li>
+                    <li>
+                        <article>
+                            <h4>Documentação de Requisitos</h4>
+                            <p><strong>Projeto:</strong> Sistema da Biblioteca</p>
+                            <p><strong>Descrição:</strong> Redigir os requisitos funcionais e não-funcionais.</p>
+                            <p><strong>Responsável:</strong> Daniel Lima</p>
+                            <p><strong>Prazo:</strong> <time datetime="2026-08-15">15/08/2026</time></p>
+                            <p><strong>Prioridade:</strong> Baixa</p>
+                        </article>
+                    </li>
+                </ul>
+            </section>
+
+            <!-- Coluna 3: Em Revisão -->
+            <section aria-labelledby="cabecalho-revisao">
+                <h3 id="cabecalho-revisao">Em Revisão</h3>
+                <ul>
+                    <li>
+                        <article>
+                            <h4>Revisão da Estrutura HTML</h4>
+                            <p><strong>Projeto:</strong> Gerenciador de Tarefas</p>
+                            <p><strong>Descrição:</strong> Validar a semântica e acessibilidade dos componentes da Etapa 1.</p>
+                            <p><strong>Responsável:</strong> Eduardo Souza</p>
+                            <p><strong>Prazo:</strong> <time datetime="2026-08-12">12/08/2026</time></p>
+                            <p><strong>Prioridade:</strong> Média</p>
+                        </article>
+                    </li>
+                    <li>
+                        <article>
+                            <h4>Testes de Usabilidade do Wireframe</h4>
+                            <p><strong>Projeto:</strong> App de Monitoria</p>
+                            <p><strong>Descrição:</strong> Executar o roteiro de testes com três participantes.</p>
+                            <p><strong>Responsável:</strong> Fernanda Costa</p>
+                            <p><strong>Prazo:</strong> <time datetime="2026-08-14">14/08/2026</time></p>
+                            <p><strong>Prioridade:</strong> Alta</p>
+                        </article>
+                    </li>
+                </ul>
+            </section>
+
+            <!-- Coluna 4: Concluída -->
+            <section aria-labelledby="cabecalho-concluida">
+                <h3 id="cabecalho-concluida">Concluída</h3>
+                <ul>
+                    <li>
+                        <article>
+                            <h4>Levantamento de Requisitos da Interface</h4>
+                            <p><strong>Projeto:</strong> Gerenciador de Tarefas</p>
+                            <p><strong>Descrição:</strong> Mapear elementos da visão de quadro e componentes de busca.</p>
+                            <p><strong>Responsável:</strong> Gabriel Rocha</p>
+                            <p><strong>Prazo:</strong> <time datetime="2026-08-10">10/08/2026</time></p>
+                            <p><strong>Prioridade:</strong> Média</p>
+                        </article>
+                    </li>
+                    <li>
+                        <article>
+                            <h4>Configuração do Repositório Git</h4>
+                            <p><strong>Projeto:</strong> E-commerce Acadêmico</p>
+                            <p><strong>Descrição:</strong> Inicializar repositório público e estruturar o README do projeto.</p>
+                            <p><strong>Responsável:</strong> Helena Dias</p>
+                            <p><strong>Prazo:</strong> <time datetime="2026-08-08">08/08/2026</time></p>
+                            <p><strong>Prioridade:</strong> Baixa</p>
+                        </article>
+                    </li>
+                </ul>
+            </section>
+
+        </section>
+
+    </main>
+
+    <!-- Rodapé da Página -->
+    <footer>
+        <p>Desenvolvido por: <strong>Seu Nome Completo</strong></p>
+        <p>Disciplina: <strong>Desenvolvimento Web / Frontend</strong></p>
+    </footer>
+
+</body>
+</html>
