@@ -1,0 +1,260 @@
+/* ==========================================================================
+   1. Reset Universal e Variáveis (:root)
+   ========================================================================== */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    /* Cores de superfície, texto e borda */
+    --color-surface-bg: #f8fafc;
+    --color-surface-card: #ffffff;
+    --color-text-main: #0f172a;
+    --color-text-muted: #475569;
+    --color-border: #cbd5e1;
+
+    /* Cores por status (garantindo contraste mínimo de 4,5:1 sobre fundo claro) */
+    --status-afazer: #b45309;
+    --status-andamento: #1d4ed8;
+    --status-revisao: #6d28d9;
+    --status-concluida: #15803d;
+
+    /* Escala de espaçamento (4 níveis) */
+    --space-sm: 0.5rem;  /* 8px */
+    --space-md: 1rem;    /* 16px */
+    --space-lg: 1.5rem;  /* 24px */
+    --space-xl: 2rem;    /* 32px */
+
+    /* Raio de canto */
+    --radius-sm: 0.25rem;
+    --radius-md: 0.5rem;
+
+    /* Foco acessível */
+    --color-focus: #0284c7;
+}
+
+/* ==========================================================================
+   2. Estilos Base e Acessibilidade (Mobile-First)
+   ========================================================================== */
+body {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background-color: var(--color-surface-bg);
+    color: var(--color-text-main);
+    line-height: 1.5;
+    padding: var(--space-md);
+}
+
+/* Responsividade de fonte usando clamp() combinando rem e vw */
+h1 {
+    font-size: clamp(1.35rem, 2.5vw + 0.8rem, 2.25rem);
+    margin-bottom: var(--space-lg);
+    color: var(--color-text-main);
+}
+
+/* Indicador de foco visível */
+:focus-visible {
+    outline: 3px solid var(--color-focus);
+    outline-offset: 2px;
+}
+
+/* Alvos de clique mínimos de 24px x 24px */
+input, 
+button, 
+label {
+    min-height: 1.5rem;
+    min-width: 1.5rem;
+}
+
+/* ==========================================================================
+   3. Formulário e Filtros
+   ========================================================================== */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+    background-color: var(--color-surface-card);
+    padding: var(--space-md);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-border);
+    margin-bottom: var(--space-xl);
+}
+
+form > div {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+}
+
+input[type="search"] {
+    padding: var(--space-sm);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    font-size: 1rem;
+}
+
+fieldset {
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    padding: var(--space-md);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm) var(--space-md);
+    align-items: center;
+}
+
+legend {
+    padding: 0 var(--space-sm);
+    font-weight: bold;
+    color: var(--color-text-main);
+}
+
+button[type="submit"] {
+    background-color: var(--color-text-main);
+    color: var(--color-surface-card);
+    border: none;
+    padding: var(--space-sm) var(--space-md);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-size: 1rem;
+    min-height: 2.75rem; /* ~44px para facilidade de toque */
+}
+
+/* ==========================================================================
+   4. Visão do Quadro (Grid) e Colunas (Flexbox)
+   ========================================================================== */
+/* Layout em Grid do Quadro: 1 coluna no mobile */
+section[aria-labelledby="titulo-quadro"] {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-lg);
+}
+
+#titulo-quadro {
+    grid-column: 1 / -1;
+    font-size: 1.5rem;
+    margin-bottom: var(--space-sm);
+}
+
+/* Estrutura das Colunas em Flexbox vertical */
+section[aria-labelledby^="cabecalho-"] {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--color-surface-card);
+    border-radius: var(--radius-md);
+    padding: var(--space-md);
+    border: 1px solid var(--color-border);
+    border-top: 4px solid var(--status-color, var(--color-border));
+}
+
+/* Vinculação dinâmica das cores de status por coluna */
+section[aria-labelledby="cabecalho-afazer"] {
+    --status-color: var(--status-afazer);
+}
+section[aria-labelledby="cabecalho-andamento"] {
+    --status-color: var(--status-andamento);
+}
+section[aria-labelledby="cabecalho-revisao"] {
+    --status-color: var(--status-revisao);
+}
+section[aria-labelledby="cabecalho-concluida"] {
+    --status-color: var(--status-concluida);
+}
+
+section[aria-labelledby^="cabecalho-"] h3 {
+    font-size: 1.25rem;
+    margin-bottom: var(--space-md);
+    color: var(--status-color);
+}
+
+ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+}
+
+/* ==========================================================================
+   5. Cartões de Tarefa (Flexbox) e Truncamento
+   ========================================================================== */
+article {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--color-surface-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    padding: var(--space-md);
+    gap: var(--space-sm);
+    min-width: 0; /* Previne estouro no Flexbox ao truncar texto */
+}
+
+/* Título truncado com reticências */
+article h4 {
+    font-size: 1rem;
+    color: var(--color-text-main);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
+    flex-grow: 1;
+}
+
+article p {
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+}
+
+/* Prazo fixado no final do cartão */
+article p:has(time) {
+    margin-top: auto;
+    padding-top: var(--space-sm);
+    border-top: 1px dashed var(--color-border);
+}
+
+footer {
+    margin-top: var(--space-xl);
+    padding-top: var(--space-md);
+    border-top: 1px solid var(--color-border);
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+}
+
+/* ==========================================================================
+   6. Breakpoints Responsivos (Apenas min-width)
+   ========================================================================== */
+
+/* Breakpoint 1: Tablets e telas médias (~640px)
+   Justificativa: A partir de 640px, há espaço suficiente para distribuir o 
+   quadro em 2 colunas mantendo a leitura dos cartões confortável sem esmagar o texto. */
+@media (min-width: 40rem) {
+    section[aria-labelledby="titulo-quadro"] {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Breakpoint 2: Desktop (~1024px)
+   Justificativa: A partir de 1024px, a tela é ampla o bastante para exibir 
+   as 4 colunas de status lado a lado e organizar os filtros em layout horizontal. */
+@media (min-width: 64rem) {
+    section[aria-labelledby="titulo-quadro"] {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    form {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        align-items: start;
+    }
+
+    form > div {
+        grid-column: 1 / -1;
+    }
+
+    button[type="submit"] {
+        grid-column: 1 / -1;
+        justify-self: start;
+    }
+}
