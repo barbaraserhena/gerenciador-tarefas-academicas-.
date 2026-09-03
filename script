@@ -1,0 +1,70 @@
+/**
+ * Gerenciador de Tarefas Acadêmicas - Etapa 3
+ * Funcionalidades: Filtro dinâmico por busca textual, status e prioridade.
+ */
+
+document.addEventListener('DOMContentLoaded', () => {
+    const formFiltros = document.querySelector('form');
+    const inputBusca = document.getElementById('busca-titulo');
+    const cartoes = document.querySelectorAll('article');
+
+    // Mapeamento entre aria-labelledby da coluna HTML e o value do radio de status
+    const mapaStatus = {
+        'cabecalho-afazer': 'a-fazer',
+        'cabecalho-andamento': 'em-andamento',
+        'cabecalho-revisao': 'em-revisao',
+        'cabecalho-concluida': 'concluida'
+    };
+
+    /**
+     * Aplica as regras de filtragem cruzada nos cartões
+     */
+    function filtrarTarefas(event) {
+        if (event) {
+            event.preventDefault();
+        }
+
+        const termoBusca = inputBusca.value.trim().toLowerCase();
+        const statusSelecionado = document.querySelector('input[name="filtro-status"]:checked').value;
+        const prioridadeSelecionada = document.querySelector('input[name="filtro-prioridade"]:checked').value;
+
+        cartoes.forEach(cartao => {
+            const itemLista = cartao.closest('li');
+            const tituloCartao = cartao.querySelector('h4').textContent.toLowerCase();
+
+            // Identifica o status do cartão com base na coluna (section) pai
+            const colunaPai = cartao.closest('section[aria-labelledby]');
+            const idCabecalho = colunaPai ? colunaPai.getAttribute('aria-labelledby') : '';
+            const statusCartao = mapaStatus[idCabecalho] || '';
+
+            // Extrai a prioridade do texto interno do cartão
+            const paragrafos = Array.from(cartao.querySelectorAll('p'));
+            const pPrioridade = paragrafos.find(p => p.textContent.includes('Prioridade:'));
+            const prioridadeCartao = pPrioridade 
+                ? pPrioridade.textContent.replace('Prioridade:', '').trim().toLowerCase() 
+                : '';
+
+            // Avalia os 3 critérios de busca/filtro
+            const atendeBusca = tituloCartao.includes(termoBusca);
+            const atendeStatus = (statusSelecionado === 'todos') || (statusCartao === statusSelecionado);
+            const atendePrioridade = (prioridadeSelecionada === 'todas') || (prioridadeCartao === prioridadeSelecionada);
+
+            // Exibe ou oculta o elemento li correspondente
+            if (atendeBusca && atendeStatus && atendePrioridade) {
+                itemLista.style.display = '';
+            } else {
+                itemLista.style.display = 'none';
+            }
+        });
+    }
+
+    // Evento de submissão do formulário ("Aplicar Filtros")
+    formFiltros.addEventListener('submit', filtrarTarefas);
+
+    // Filtragem em tempo real durante a digitação
+    inputBusca.addEventListener('input', filtrarTarefas);
+
+    // Filtragem imediata ao alterar qualquer campo do tipo radio
+    const radios = document.querySelectorAll('input[name="filtro-status"], input[name="filtro-prioridade"]');
+    radios.forEach(radio => radio.addEventListener('change', filtrarTarefas));
+});
