@@ -1,9 +1,10 @@
 # Gerenciador de Tarefas Acadêmicas
 
-Aplicação desenvolvida para gerenciar e acompanhar tarefas acadêmicas.
+Aplicação desenvolvida para gerenciar e acompanhar tarefas e prazos acadêmicos.
 
-## 🔗 Link da Aplicação (GitHub Pages)
-[Coloque o link do Pages aqui após ativar]
+## 🔗 Link do Projeto Publicado
+https://barbaraserhena.github.io/gerenciador-tarefas-academicas-/
 
-## 🛠️ Tecnologias
-* HTML5, CSS3, JavaScript (Estado único e funções de derivação)
+## 🛠️ Tecnologias e Regras de Negócio
+* HTML5 / CSS3 / JavaScript
+* Estrutura de Estado Único e Funções de Derivação
