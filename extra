@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portfólio de Belas Artes - Monet & Abstrato Avançado</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    body {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #e6eff5 0%, #fceede 50%, #e8e5f5 100%);
+      color: #2c2a38;
+      font-family: 'Georgia', 'Segoe UI', serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* ELEMENTOS FLUTUANTES (PÉTALAS E GIRASSÓIS) */
+    .petala, .girassol-flutuante {
+      position: fixed;
+      pointer-events: none;
+      z-index: 10;
+      animation: cair 8s linear infinite, balancar 3s ease-in-out infinite alternate;
+    }
+
+    .petala {
+      background: linear-gradient(135deg, #ffb7c5, #ff9ebb);
+      border-radius: 15px 0 15px 0;
+      opacity: 0.75;
+    }
+
+    .girassol-flutuante {
+      font-size: 24px;
+      opacity: 0.9;
+    }
+
+    @keyframes cair {
+      0% { top: -10%; }
+      100% { top: 105%; }
+    }
+
+    @keyframes balancar {
+      0% { transform: translateX(0) rotate(0deg); }
+      100% { transform: translateX(80px) rotate(360deg); }
+    }
+
+    /* OVERLAY / BANNER VAN GOGH (AO PRESSIONAR ENTER) */
+    #vanGoghBanner {
+      position: fixed;
+      top: 55px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-20px);
+      background: linear-gradient(135deg, #f39c12, #f1c40f);
+      color: #2c3e50;
+      padding: 12px 30px;
+      border-radius: 30px;
+      font-weight: bold;
+      font-size: 1.1rem;
+      box-shadow: 0 10px 30px rgba(243, 156, 18, 0.5);
+      border: 2px solid #fff;
+      z-index: 400;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.5s ease;
+    }
+
+    #vanGoghBanner.ativo {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* BARRA SUPERIOR */
+    .painel-topo {
+      position: fixed;
+      top: 10px;
+      z-index: 300;
+      display: flex;
+      gap: 12px;
+      background: rgba(255, 255, 255, 0.92);
+      padding: 8px 20px;
+      border-radius: 40px;
+      backdrop-filter: blur(15px);
+      border: 1px solid rgba(212, 175, 55, 0.5);
+      box-shadow: 0 10px 25px rgba(180, 150, 100, 0.2);
+    }
+
+    .input-pesquisa {
+      background: #fff;
+      border: 2px solid #d4af37;
+      color: #333;
+      padding: 8px 18px;
+      border-radius: 20px;
+      outline: none;
+      font-size: 0.85rem;
+      width: 280px;
+    }
+    .input-pesquisa:focus { box-shadow: 0 0 12px #d4af37; }
+
+    .btn-layout {
+      background: #fdfaf6;
+      color: #8b5a2b;
+      border: 1px solid #d4af37;
+      padding: 8px 16px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+    }
+
+    .btn-layout:hover {
+      background: #d4af37;
+      color: #fff;
+    }
+
+    /* GALERIA PRINCIPAL */
+    .quadro-galeria {
+      position: relative;
+      width: 94vw;
+      height: 84vh;
+      margin-top: 45px;
+      border: 14px solid #5c4033;
+      outline: 3px solid #d4af37;
+      box-shadow: 0 20px 50px rgba(80, 60, 40, 0.25);
+      border-radius: 12px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.92) 0%, rgba(245,240,235,0.92) 100%);
+      padding: 20px;
+      overflow-y: auto;
+    }
+
+    .projeto-cabecalho {
+      background: linear-gradient(90deg, #fff5eb, #f3e8ff, #e6f0fa);
+      border: 2px solid #d4af37;
+      border-radius: 10px;
+      padding: 12px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .container-tarefas {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      width: 100%;
+      min-height: 600px;
+    }
+
+    .card-tarefa {
+      width: calc(25% - 15px);
+      height: 380px;
+      border-radius: 12px;
+      background: #fff;
+      overflow: hidden;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 8px 25px rgba(100, 80, 60, 0.15);
+      border: 3px solid #e2d4c9;
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .card-tarefa:hover {
+      transform: translateY(-5px) scale(1.02);
+      box-shadow: 0 12px 30px rgba(180, 130, 80, 0.3);
+    }
+
+    /* ANIMAÇÃO DE REORGANIZAÇÃO */
+    .card-tarefa.oculto {
+      opacity: 0 !important;
+      transform: scale(0.6) !important;
+      width: 0 !important;
+      height: 0 !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      border: none !important;
+      overflow: hidden !important;
+      pointer-events: none;
+    }
+
+    .arte-container {
+      width: 100%;
+      height: 58%;
+      position: relative;
+      background: #f7f5f0;
+      overflow: hidden;
+    }
+    .arte-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .detalhes-tarefa {
+      padding: 12px;
+      height: 42%;
+      background: #ffffff;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .detalhes-tarefa h3 { font-size: 0.9rem; color: #3a2e2b; }
+    .detalhes-tarefa p { font-size: 0.75rem; color: #776655; margin-top: 2px; }
+
+    .tags-container {
+      display: flex;
+      gap: 5px;
+      flex-wrap: wrap;
+      margin-top: 6px;
+    }
+
+    .tag {
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-size: 0.62rem;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+
+    .status-a_fazer { border-color: #e63946; }
+    .status-em_andamento { border-color: #0077b6; }
+    .status-em_revisao { border-color: #d4af37; }
+    .status-concluida { border-color: #2a9d8f; }
+
+    .prio-alta { background: #ffccd5; color: #900C3F; }
+    .prio-media { background: #fff3cd; color: #856404; }
+    .prio-baixa { background: #d1e7dd; color: #0f5132; }
+
+    /* MUDANÇA DINÂMICA DE LAYOUT VIA FLEX/GRID */
+    body.modo-horizontal .container-tarefas { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 15px; }
+    body.modo-horizontal .card-tarefa { min-width: 280px; }
+
+    body.modo-vertical .container-tarefas { flex-direction: column; }
+    body.modo-vertical .card-tarefa { width: 100%; height: 180px; flex-direction: row; }
+    body.modo-vertical .arte-container { width: 35%; height: 100%; }
+    body.modo-vertical .detalhes-tarefa { width: 65%; height: 100%; }
+  </style>
+</head>
+<body class="modo-grade">
+
+  <div id="chuvaPetalas"></div>
+
+  <!-- BANNER VAN GOGH -->
+  <div id="vanGoghBanner">🌻 Modo Vincent van Gogh: Girassóis Ativados! 🌻</div>
+
+  <nav class="painel-topo">
+    <input type="text" id="inputPesquisa" class="input-pesquisa" placeholder="🔍 Buscar obra ou artista (Enter para Van Gogh)..." oninput="filtrarTarefas()" onkeydown="verificarEnter(event)">
+    <button class="btn-layout" onclick="mudarLayout('modo-grade')">Grade</button>
+    <button class="btn-layout" onclick="mudarLayout('modo-horizontal')">Horizontal</button>
+    <button class="btn-layout" onclick="mudarLayout('modo-vertical')">Vertical</button>
+  </nav>
+
+  <main class="quadro-galeria">
+
+    <header class="projeto-cabecalho">
+      <div>
+        <h2 style="color: #5a3e1b;" id="tituloGaleria">Galeria Monet & Abstrato Contemporâneo</h2>
+        <p style="color: #665; font-size: 0.85rem;"><strong>Curadoria de Artes Plásticas:</strong> Portfólio Reorganizável</p>
+      </div>
+      <div>
+        <small style="color: #8b5a2b; font-weight: bold;">⚡ Clique nos quadros para alterar o status</small>
+      </div>
+    </header>
+
+    <section class="container-tarefas" id="galeriaTarefas">
+
+      <article class="card-tarefa status-a_fazer" onclick="avancarStatus(this)">
+        <div class="arte-container"><img src="watermarked_img_7411780786729053393.jpg" alt="Lago de Ninféias"></div>
+        <div class="detalhes-tarefa">
+          <div><h3>#01 - Lago de Ninféias Impressionista</h3><p>Estudo de luzes e reflexos por Monet.</p></div>
+          <div class="tags-container"><span class="tag tag-status-lbl">A Fazer</span><span class="tag prio-alta">Alta</span><span class="tag">Monet</span></div>
+        </div>
+      </article>
+
+      <article class="card-tarefa status-em_andamento" onclick="avancarStatus(this)">
+        <div class="arte-container"><img src="watermarked_img_14537103203053357118.jpg" alt="Expressionismo Abstrato"></div>
+        <div class="detalhes-tarefa">
+          <div><h3>#02 - Expressionismo Abstrato em Aterro</h3><p>Texturas de tinta acrílica e folha de ouro.</p></div>
+          <div class="tags-container"><span class="tag tag-status-lbl">Em Andamento</span><span class="tag prio-media">Média</span><span class="tag">Abstrato</span></div>
+        </div>
+      </article>
+
+      <article class="card-tarefa status-em_revisao" onclick="avancarStatus(this)">
+        <div class="arte-container"><img src="watermarked_img_11937065718551196046.jpg" alt="Pessegueiros em Flor"></div>
+        <div class="detalhes-tarefa">
+          <div><h3>#03 - Pessegueiros em Flor na Primavera</h3><p>Pintura com iluminação natural ao estilo Monet.</p></div>
+          <div class="tags-container"><span class="tag tag-status-lbl">Em Revisão</span><span class="tag prio-baixa">Baixa</span><span class="tag">Monet</span></div>
+        </div>
+      </article>
+
+      <article class="card-tarefa status-concluida" onclick="avancarStatus(this)">
+        <div class="arte-container"><img src="watermarked_img_2770094051894073554.jpg" alt="Geometria Abstrata"></div>
+        <div class="detalhes-tarefa">
+          <div><h3>#04 - Geometria Orgânica e Luz</h3><p>Composição geométrica com gradientes suaves.</p></div>
+          <div class="tags-container"><span class="tag tag-status-lbl">Concluída</span><span class="tag prio-alta">Alta</span><span class="tag">Abstrato</span></div>
+        </div>
+      </article>
+
+    </section>
+
+  </main>
+
+  <script>
+    // CRIAÇÃO DE PÉTALAS FLUTUANTES INICIAIS
+    const containerPetalas = document.getElementById('chuvaPetalas');
+    for (let i = 0; i < 20; i++) {
+      let petala = document.createElement('div');
+      petala.className = 'petala';
+      petala.style.left = Math.random() * 100 + 'vw';
+      petala.style.width = (Math.random() * 12 + 8) + 'px';
+      petala.style.height = (Math.random() * 12 + 8) + 'px';
+      petala.style.animationDuration = (Math.random() * 5 + 5) + 's';
+      petala.style.animationDelay = Math.random() * 5 + 's';
+      containerPetalas.appendChild(petala);
+    }
+
+    // MUDANÇA DE LAYOUT
+    function mudarLayout(modo) {
+      document.body.className = modo;
+    }
+
+    // REORGANIZAÇÃO COM ANIMAÇÃO NA PESQUISA
+    function filtrarTarefas() {
+      const termo = document.getElementById('inputPesquisa').value.toLowerCase();
+      const cartoes = document.querySelectorAll('.card-tarefa');
+
+      cartoes.forEach(card => {
+        const conteudo = card.innerText.toLowerCase();
+        if (conteudo.includes(termo)) {
+          card.classList.remove('oculto');
+        } else {
+          card.classList.add('oculto');
+        }
+      });
+    }
+
+    // AÇÃO AO PRESSIONAR ENTER (VAN GOGH & GIRASSÓIS)
+    function verificarEnter(event) {
+      if (event.key === 'Enter') {
+        // Exibe o Banner de Van Gogh
+        const banner = document.getElementById('vanGoghBanner');
+        document.getElementById('tituloGaleria').innerText = "Tributo Especial: Vincent van Gogh & Monet";
+        banner.classList.add('ativo');
+
+        setTimeout(() => banner.classList.remove('ativo'), 4000);
+
+        // Gera Girassóis na Tela
+        for (let i = 0; i < 12; i++) {
+          let girassol = document.createElement('div');
+          girassol.className = 'girassol-flutuante';
+          girassol.innerText = '🌻';
+          girassol.style.left = Math.random() * 100 + 'vw';
+          girassol.style.animationDuration = (Math.random() * 4 + 4) + 's';
+          containerPetalas.appendChild(girassol);
+        }
+      }
+    }
+
+    // CICLO DE STATUS DA OBRA
+    const cicloStatus = [
+      { id: 'status-a_fazer', nome: 'A Fazer' },
+      { id: 'status-em_andamento', nome: 'Em Andamento' },
+      { id: 'status-em_revisao', nome: 'Em Revisão' },
+      { id: 'status-concluida', nome: 'Concluída' }
+    ];
+
+    function avancarStatus(cardElemento) {
+      let statusIndex = cicloStatus.findIndex(s => cardElemento.classList.contains(s.id));
+      cardElemento.classList.remove(cicloStatus[statusIndex].id);
+
+      let proximoIndex = (statusIndex + 1) % cicloStatus.length;
+      let novoStatus = cicloStatus[proximoIndex];
+
+      cardElemento.classList.add(novoStatus.id);
+      cardElemento.querySelector('.tag-status-lbl').innerText = novoStatus.nome;
+    }
+  </script>
+</body>
+</html>
